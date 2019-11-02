@@ -4,6 +4,7 @@ import { Fade } from "react-slideshow-image";
 import axios from "axios";
 import * as animationData from "../animacoes/6459-planets-loading-screen-earth-moon-and-mars.json";
 import styled from "styled-components";
+import SweetAlert from "sweetalert2-react";
 
 const apiKey = "ism0GFhyiPyyNkePZ5LGuuuL1ufpgwXzDsyxTXbh";
 const url = `https://api.nasa.gov/EPIC/api/natural/images?api_key=${apiKey}`;
@@ -12,8 +13,10 @@ const urlImage = `https://api.nasa.gov/EPIC/archive/natural/2019/06/27/png/`;
 const ImagensTerra = () => {
   const [carregando, setCarregando] = useState(true);
   const [imagens, setImagens] = useState([]);
+  const [mensagemErro, setMensagemErro] = useState("");
+  const [mostrarMensagemErro, setMostrarMensagemErro] = useState(false);
 
-  const defaultOptions = {
+  const opcoesLottie = {
     loop: true,
     autoplay: true,
     animationData: animationData.default,
@@ -22,7 +25,7 @@ const ImagensTerra = () => {
     }
   };
 
-  const properties = {
+  const propriedades = {
     duration: 3000,
     transitionDuration: 400,
     infinite: true,
@@ -33,14 +36,16 @@ const ImagensTerra = () => {
 
   useEffect(() => {
     axios.get(url).then(
-      data => {
-        setImagens(data.data);
+      resposta => {
+        setImagens(resposta.data);
         setTimeout(() => {
           setCarregando(false);
         }, 2000);
       },
       erro => {
         console.log(erro);
+        setMostrarMensagemErro(true);
+        setMensagemErro(erro.message);
         setTimeout(() => {
           setCarregando(false);
         }, 2000);
@@ -52,14 +57,14 @@ const ImagensTerra = () => {
     <div>
       {carregando ? (
         <Lottie
-          options={defaultOptions}
+          options={opcoesLottie}
           width={900}
           isStopped={false}
           isPaused={false}
         />
       ) : (
         <BoxConteudo>
-          <Fade {...properties}>
+          <Fade {...propriedades}>
             {imagens.map(item => {
               return (
                 <div>
@@ -67,7 +72,7 @@ const ImagensTerra = () => {
                     <img
                       src={`${urlImage}${item.image}.png?api_key=${apiKey}`}
                       width="700"
-                      alt=""
+                      alt={item.image}
                     />
                   </SlideTerra>
                   <Informacoes>
@@ -81,6 +86,14 @@ const ImagensTerra = () => {
               );
             })}
           </Fade>
+          <SweetAlert
+            show={mostrarMensagemErro}
+            title="Erro"
+            text={mensagemErro}
+            onConfirm={() => {
+              window.location.reload();
+            }}
+          />
         </BoxConteudo>
       )}
     </div>

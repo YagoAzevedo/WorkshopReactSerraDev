@@ -5,13 +5,13 @@ import * as animationData from "../animacoes/6459-planets-loading-screen-earth-m
 import ImagensTerra from "./ImagensTerra";
 
 const Conteudo = () => {
-  const [tela, setTela] = useState("inicial");
+  const [telaInicial, setTelaInicial] = useState(true);
 
   const visualizar = () => {
-    setTela("imagens");
+    setTelaInicial(false);
   };
 
-  const defaultOptions = {
+  const opcoesLottie = {
     loop: true,
     autoplay: true,
     animationData: animationData.default,
@@ -22,7 +22,7 @@ const Conteudo = () => {
 
   return (
     <div>
-      {tela === "inicial" ? (
+      {telaInicial ? (
         <BoxConteudo>
           <Title>DSCOVR</Title>
           <p>
@@ -37,7 +37,7 @@ const Conteudo = () => {
             disponível na API da NASA.
           </p>
           <Lottie
-            options={defaultOptions}
+            options={opcoesLottie}
             width={500}
             isStopped={true}
             isPaused={true}
