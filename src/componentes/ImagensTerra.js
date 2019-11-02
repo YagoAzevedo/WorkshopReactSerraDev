@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 const apiKey = "ism0GFhyiPyyNkePZ5LGuuuL1ufpgwXzDsyxTXbh";
 const url = `https://api.nasa.gov/EPIC/api/natural/images?api_key=${apiKey}`;
+const urlImage = `https://api.nasa.gov/EPIC/archive/natural/2019/06/27/png/`;
 
 const ImagensTerra = () => {
   const [carregando, setCarregando] = useState(true);
@@ -33,33 +34,13 @@ const ImagensTerra = () => {
   useEffect(() => {
     axios.get(url).then(
       data => {
-        let listaImagens = data.data.map(item => {
-          let url =
-            "https://api.nasa.gov/EPIC/archive/natural/2019/06/27/png/" +
-            item.image +
-            ".png?api_key=ism0GFhyiPyyNkePZ5LGuuuL1ufpgwXzDsyxTXbh";
-          return (
-            <div>
-              <SlideTerra>
-                <img src={url} width="700" alt="" />
-              </SlideTerra>
-              <Informacoes>
-                <p>Terra</p>
-                <p>{item.date}</p>
-                <p>{item.caption}</p>
-                <p>{item.identifier}</p>
-                <p>{item.image}</p>
-              </Informacoes>
-            </div>
-          );
-        });
-        setImagens(listaImagens);
+        setImagens(data.data);
         setTimeout(() => {
           setCarregando(false);
         }, 2000);
       },
       erro => {
-        console.log("Limite excedido");
+        console.log(erro);
         setTimeout(() => {
           setCarregando(false);
         }, 2000);
@@ -78,7 +59,28 @@ const ImagensTerra = () => {
         />
       ) : (
         <BoxConteudo>
-          <Fade {...properties}>{imagens}</Fade>
+          <Fade {...properties}>
+            {imagens.map(item => {
+              return (
+                <div>
+                  <SlideTerra>
+                    <img
+                      src={`${urlImage}${item.image}.png?api_key=${apiKey}`}
+                      width="700"
+                      alt=""
+                    />
+                  </SlideTerra>
+                  <Informacoes>
+                    <p>Terra</p>
+                    <p>{item.date}</p>
+                    <p>{item.caption}</p>
+                    <p>{item.identifier}</p>
+                    <p>{item.image}</p>
+                  </Informacoes>
+                </div>
+              );
+            })}
+          </Fade>
         </BoxConteudo>
       )}
     </div>
