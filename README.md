@@ -13,3 +13,5 @@ Em seguida rode:
     $ npm start
 
 Abra [http://localhost:3000](http://localhost:3000) para visualizar no browser
+
+[Clique aqui](https://docs.google.com/presentation/d/1H8cH88TsxKa8gzUXuZjzGMceJrxaNEpB-F6fwhWbA44/edit#slide=id.gcb9a0b074_1_0) para visualizar a apresentação.
