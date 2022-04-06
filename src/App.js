@@ -1,7 +1,7 @@
 import React from "react";
 import Topo from "./componentes/Topo";
-import Conteudo from "./componentes/Conteudo";
 import styled, { createGlobalStyle } from "styled-components";
+import Conteudo from "./componentes/Conteudo";
 
 const App = () => {
   return (
